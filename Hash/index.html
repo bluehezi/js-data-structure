@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HashTable</title>
+	<script src="HashTable.js"></script>
+</head>
+<body>
+	
+	<script>
+		~function (HashTable) {
+			var ht = new HashTable();
+			ht.put('abcd',1234);
+			ht.put('abcd',2345);
+			ht.put('acbd',3456);
+			ht.put('adcb',4567);
+			console.log(ht.get('acbd'));
+			ht.remove('acbd');
+			console.log(ht.get('acdb',123));
+			ht.print();
+			console.log(ht.remove('aaaa'))
+
+		} (HashTable);	
+	</script>
+
+</body>
+</html>
