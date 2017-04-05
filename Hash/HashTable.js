@@ -1,8 +1,8 @@
 /*
 * @Author: bluedoor
 * @Date:   2017-04-04 10:37:26
-* @Last Modified by:   bluedoor
-* @Last Modified time: 2017-04-04 13:21:39
+* @Last Modified by:   bluehezi
+* @Last Modified time: 2017-04-05 18:54:15
 */
 
 
@@ -77,7 +77,7 @@ function HashTable () {
 		}
 	}
 
-	// 定位
+	// 定位 散列函数
 	this.loseloseHashCode = function (key) {
 		// if (Object.prototype.toString.call(key) !== '[object string]') {
 		// 	throw new Error('not string');
@@ -85,11 +85,12 @@ function HashTable () {
 		if (Object.prototype.toString.call(key) !== Object.prototype.toString.call(new String())) {
 			throw new Error('not string');
 		}
-		var hash = 0;
+		var hash = 5381;
 		for (var i = 0; i < key.length; i++) {
 			hash += key.charCodeAt(i);
+			hash = hash * 33 + key.charCodeAt(i);
 		}
-		return hash % 100;
+		return hash % 1013;
 	}
 
 	this.put = function (key, value) {
@@ -147,7 +148,13 @@ function HashTable () {
 
 	this.size = function () {
 		// 散列数组获取长度
-		return Object.keys(items).length;
+		var size = 0;
+		Object.keys(items).forEach(function(value, i){
+			if (items[value] !== undefined) {
+				++size;
+			}
+		});
+		return size;
 	}
 	this.clear = function () {
 		items = [];
