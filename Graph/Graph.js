@@ -2,7 +2,7 @@
 * @Author: bluehezi
 * @Date:   2017-04-08 21:52:45
 * @Last Modified by:   bluehezi
-* @Last Modified time: 2017-04-09 13:49:11
+* @Last Modified time: 2017-04-09 22:38:03
 */
 
 'use strict';
@@ -98,6 +98,11 @@ function Graph (Dictionary, Queue, Stack) {
 		};
 	}
 
+	/**
+	 * 利用广度优先搜索算法找最小路径
+	 * @param  {[type]} v [开始顶点]
+	 * @return {[type]}   [undefined]
+	 */
 	this.shortPathV = function (v) {
 		var fromVertex = v;
 		var shortestPathA = this.BFS(fromVertex);
@@ -119,6 +124,79 @@ function Graph (Dictionary, Queue, Stack) {
 			}
 			console.log(s);
 		}
+	}
+
+	/**
+	 * 深度优先搜索算法
+	 * @param  {Function} callback [description]
+	 * @return {[type]}            [description]
+	 */
+	this.dfs = function (callback) {
+		var colors = initializeColor();
+		for (var i = 0; i < vertices.length; i++) {
+			if (colors[vertices[i]] === 'white') {
+				bfsVisit(vertices[i], colors, callback);
+			}
+		}
+	}
+
+	function bfsVisit (v, colors, callback) {
+		colors[v] = 'grey';
+		if (callback) {
+			callback(v);
+		}
+		var neighbors = adjList.get(v);
+
+		for (var i = 0; i < neighbors.length; i++) {
+			if (colors[neighbors[i]] === 'white') {
+				bfsVisit(neighbors[i], colors, callback);
+			}
+		}
+
+		colors[v] = 'black';
+	}
+
+	var time = 0;
+	this.DFS = function (callback) {
+		var colors = initializeColor(),
+			d = [], // 记录节点被发现时的时间
+			f = [], // 记录节点搜索完毕的时间
+			pred = []; // 记录节点的前溯节点
+		for (let i = 0; i < vertices.length; i++) {
+			d[vertices[i]] = 0;
+			f[vertices[i]] = 0;
+			pred[vertices[i]] = null;
+		}
+		for (let i = 0; i < vertices.length; i++) {
+			if (colors[vertices[i]] === 'white') {
+				DFSVisit(vertices[i], colors, d, f, pred, callback);
+			}
+		}
+		return {
+			discorery: d,
+			finished: f,
+			predecessors: pred
+		};
+
+	}
+
+	function DFSVisit (v, colors, d, f, pred, callback) {
+		colors[v] = 'grey';
+		d[v] = ++time;
+
+		if (callback) {
+			callback(v);
+		}
+
+		var neighbors = adjList.get(v);
+		for (let i = 0; i < neighbors.length; i++) {
+			if (colors[neighbors[i]] === 'white') {
+				pred[neighbors[i]] = v;
+				DFSVisit(neighbors[i], colors, d, f, pred, callback);
+			}
+		}	
+		f[v] = ++time;
+		colors[v] = 'black';
 	}
 
 	// 搜索算法需要用颜色反映节点状态

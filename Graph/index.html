@@ -32,11 +32,21 @@
 			graph.addEdge('E', 'I');
 
 			console.log(graph.toString());
+			console.log('广度优先搜索算法');
 			graph.bfs('A', function (v) {
 				console.log(v);
 			});
 
 			graph.shortPathV('B');
+
+			console.log(graph.BFS('A'));
+
+			console.log('深度优先搜索算法');
+			graph.dfs(function (v) {
+				console.log(v);
+			});
+
+			console.log(graph.DFS());
 		} (Dictionary, Queue, Stack, Graph);
 	</script>
 </body>
